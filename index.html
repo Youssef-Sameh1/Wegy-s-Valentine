@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For Wegy ❤️</title>
     <style>
         /* --- DISNEY VIBES CSS --- */
@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             height: 100vh;
+            width: 100vw;
             background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%);
             color: white;
             font-family: 'Poppins', sans-serif;
@@ -22,25 +23,23 @@
             justify-content: center;
         }
 
-        /* Starry Background Animation */
+        /* Starry Background */
         .stars {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: transparent;
             z-index: -1;
+            background: transparent;
             box-shadow: 
                 10vw 10vh 1px white, 20vw 50vh 1px white, 30vw 20vh 2px white,
                 40vw 80vh 1px white, 60vw 10vh 2px white, 80vw 60vh 1px white,
                 90vw 20vh 1px white, 50vw 50vh 2px white;
             animation: twinkle 5s infinite alternate;
         }
-
         @keyframes twinkle {
             0% { opacity: 0.5; transform: translateY(0px); }
             100% { opacity: 1; transform: translateY(-10px); }
         }
 
-        /* Container Styling */
         .container {
             text-align: center;
             position: relative;
@@ -51,23 +50,24 @@
 
         h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 4rem;
+            font-size: 3.5rem;
             text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
-            margin-bottom: 20px;
+            margin: 10px 0 20px 0;
             color: #fff0f5;
+            line-height: 1.2;
         }
 
-        /* Video Frame Styling */
         .video-frame {
-            border: 5px solid #d4af37; /* Gold border */
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            border: 4px solid #d4af37;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
             overflow: hidden;
             background: #000;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 20px auto;
             width: 100%;
             max-width: 600px;
             aspect-ratio: 16/9;
+            position: relative;
         }
 
         video {
@@ -77,22 +77,26 @@
             display: block;
         }
 
-        /* Buttons */
         .buttons {
             display: flex;
-            gap: 50px;
+            gap: 30px;
             justify-content: center;
+            align-items: center;
+            height: 80px; /* Fixed height to prevent layout shift */
         }
 
         button {
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            padding: 12px 40px;
+            font-size: 1.3rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease; /* Smooth transition for movements */
+            -webkit-tap-highlight-color: transparent;
+            position: relative; /* Needed for initial layout */
+            z-index: 20;
         }
 
         #yesBtn {
@@ -100,11 +104,7 @@
             color: white;
             box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
         }
-
-        #yesBtn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #ff69b4;
-        }
+        #yesBtn:active { transform: scale(0.95); }
 
         #noBtn {
             background: rgba(255, 255, 255, 0.2);
@@ -112,7 +112,13 @@
             border: 1px solid rgba(255,255,255,0.4);
         }
 
-        /* Success Screen (Hidden Initially) */
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            button { padding: 10px 25px; font-size: 1.1rem; }
+        }
+
+        /* Success Screen */
         #success-screen {
             display: none;
             position: absolute;
@@ -120,24 +126,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             z-index: 100;
         }
 
         .success-text {
             font-family: 'Great Vibes', cursive;
-            font-size: 5rem;
+            font-size: 4rem;
             color: #ffd700;
             animation: pop 1s ease forwards;
             margin-bottom: 20px;
         }
-
         @keyframes pop {
             0% { transform: scale(0); }
             80% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-
     </style>
 </head>
 <body>
@@ -155,11 +159,15 @@
             <button id="yesBtn">Yes</button>
             <button id="noBtn">No</button>
         </div>
+        
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 15px;">
+            (Move cursor or drag finger ✨)
+        </p>
     </div>
 
     <div id="success-screen">
         <h1 class="success-text">YAAAYYYY!!!!</h1>
-        <div class="video-frame" style="width: 80%; max-width: 800px;">
+        <div class="video-frame" style="width: 90%; max-width: 800px;">
             <video id="aladdinVideo" src="aladdin.mp4" playsinline></video>
         </div>
     </div>
@@ -167,58 +175,102 @@
     <script>
         const trampVideo = document.getElementById('trampVideo');
         const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
         const questionScreen = document.getElementById('question-screen');
         const successScreen = document.getElementById('success-screen');
         const aladdinVideo = document.getElementById('aladdinVideo');
 
-        // VIDEO SETTINGS
-        // The spaghetti scene kiss happens roughly around 5 seconds in
+        // ANIMATION SETTINGS
         const KISS_TIME = 5.0; 
-        const MAX_DISTANCE = 500; // Pixels away from button to start effect
+        const MAX_DISTANCE = 500; 
+        
+        // Variables for smooth animation
+        let targetTime = 0;
+        let isAnimating = true;
 
-        // 1. MOUSE INTERACTION LOGIC
-        document.addEventListener('mousemove', (e) => {
-            // Get position of the Yes button center
+        // --- 1. SMOOTH VIDEO SCRUBBING LOGIC ---
+        
+        // Input Handler (Mouse or Touch)
+        function handleInput(x, y) {
             const rect = yesBtn.getBoundingClientRect();
             const btnX = rect.left + rect.width / 2;
             const btnY = rect.top + rect.height / 2;
+            
+            const dist = Math.hypot(x - btnX, y - btnY);
 
-            // Calculate distance between mouse and button center
-            const dist = Math.hypot(e.clientX - btnX, e.clientY - btnY);
-
-            // Calculate percentage (0.0 to 1.0)
-            // If we are close (dist=0), val is 1. If far (dist > 500), val is 0.
+            // Calculate "Ideal" time
             let proximity = 1 - (dist / MAX_DISTANCE);
             if (proximity < 0) proximity = 0;
 
-            // Set video time based on proximity
-            // 0% proximity = 0:00
-            // 100% proximity = KISS_TIME
-            if (trampVideo.readyState >= 2) { // Ensure video data is loaded
-                 trampVideo.currentTime = proximity * KISS_TIME;
+            // Mobile multiplier (make it easier)
+            if (window.innerWidth < 600) {
+                proximity = proximity * 1.3; 
+                if (proximity > 1) proximity = 1;
             }
+
+            // Set the target time (we don't set video time yet!)
+            targetTime = proximity * KISS_TIME;
+        }
+
+        // The "Game Loop" - Runs 60 times a second for smoothness
+        function animateVideo() {
+            if (isAnimating && trampVideo.readyState >= 1) {
+                // Smoothly move current time towards target time
+                // The '0.1' is the speed factor. Lower = smoother/slower. Higher = snappier.
+                const diff = targetTime - trampVideo.currentTime;
+                
+                // Only update if difference is noticeable (saves CPU)
+                if (Math.abs(diff) > 0.01) {
+                    trampVideo.currentTime += diff * 0.1; 
+                }
+            }
+            requestAnimationFrame(animateVideo);
+        }
+        
+        // Start the loop
+        animateVideo();
+
+        // Listeners for Input
+        document.addEventListener('mousemove', (e) => handleInput(e.clientX, e.clientY));
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault(); 
+            const touch = e.touches[0];
+            handleInput(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+
+        // --- 2. THE RUNAWAY "NO" BUTTON ---
+
+        function moveButtonAway() {
+            // Get screen dimensions
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+            // Calculate random position
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            // Apply "Fixed" position so it can jump anywhere on screen
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // Trigger on hover (Desktop) and touch (Mobile)
+        noBtn.addEventListener('mouseover', moveButtonAway);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Stop click from happening
+            moveButtonAway();
         });
 
-        // 2. CLICK YES LOGIC
+
+        // --- 3. YES BUTTON LOGIC ---
         yesBtn.addEventListener('click', () => {
-            // Hide the question screen
+            isAnimating = false; // Stop the loop
             questionScreen.style.display = 'none';
-            
-            // Show the success screen with Flex layout
             successScreen.style.display = 'flex';
-            
-            // Play the Aladdin video
             aladdinVideo.play();
-            aladdinVideo.volume = 1.0; // Ensure sound is on
-        });
-
-        // 3. NO BUTTON LOGIC (Just for fun visuals)
-        const noBtn = document.getElementById('noBtn');
-        noBtn.addEventListener('mouseover', () => {
-            // Move the button slightly away if they try to click no (optional cheeky feature)
-            const x = Math.random() * 100 - 50;
-            const y = Math.random() * 100 - 50;
-            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+            aladdinVideo.volume = 1.0;
         });
 
     </script>
